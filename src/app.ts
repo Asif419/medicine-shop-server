@@ -4,6 +4,7 @@ import globalErrorHandler from './middlewares/globalErrorHandler';
 import cookieParser from 'cookie-parser';
 import authRoutes from './modules/auth/auth.routes';
 import { userRoutes } from './modules/users/user.routes';
+import medicineRouter from './modules/medicine/medicine.routes';
 const app: Application = express();
 
 app.use(express.json());
@@ -17,7 +18,7 @@ app.use(
 
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
-
+app.use('/api/medicine', medicineRouter);
 
 app.use(globalErrorHandler);
 
