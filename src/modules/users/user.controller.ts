@@ -31,12 +31,14 @@ const getUser = catchAsync(async (req, res) => {
 });
 
 const getAllUsers = catchAsync(async (req, res) => {
-  const result = await UserService.getAllUsersFromDb();
+  const result = await UserService.getAllUsersFromDb(
+    req.user as JwtPayload & { role: string },
+  );
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
-    message: 'All users retrieved Successfully',
+    message: 'Users retrieved successfully',
     data: result,
   });
 });
