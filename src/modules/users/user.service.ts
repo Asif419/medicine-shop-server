@@ -10,8 +10,17 @@ const createUserIntoDB = async (payload: TUser): Promise<TUser> => {
   return result;
 };
 
-const getUserFromDB = async (user : JwtPayload) => {
-  const result = await User.findOne({email : user?.email});
+const getUserFromDB = async (user: JwtPayload & { role: string }) => {
+  if (!user?.email) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, 'Unauthorized access');
+  }
+
+  const result = await User.findOne({ email: user.email });
+
+  if (!result) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
+  }
+
   return result;
 };
 
@@ -38,13 +47,13 @@ const updateUserActiveStatusIntoDb = async (id: string) => {
 };
 
 const getAllUsersFromDb = async () => {
-  const result = await User.find({role : "user"}).select('-password');
+  const result = await User.find({ role: 'user' }).select('-password');
   return result;
-}
+};
 
 export const UserService = {
   getUserFromDB,
   createUserIntoDB,
-  getAllUsersFromDb ,
+  getAllUsersFromDb,
   updateUserActiveStatusIntoDb,
 };

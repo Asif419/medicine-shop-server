@@ -18,12 +18,14 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const getUser = catchAsync(async (req, res) => {
-  const result = await UserService.getUserFromDB(req.user as JwtPayload);
+  const result = await UserService.getUserFromDB(
+    req.user as JwtPayload & { role: string },
+  );
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
-    message: 'Users Getting Successfully',
+    message: 'User retrieved successfully',
     data: result,
   });
 });
