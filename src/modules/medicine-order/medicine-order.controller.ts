@@ -99,9 +99,9 @@ const verifyMedicinePayment = catchAsync(async (req, res) => {
 const getUserMedicineOrders = catchAsync(
   async (req: Request, res: Response) => {
     const userId = req.user?._id;
-    const role = req.user?.role; // make sure 'role' is added to the user object by your auth middleware
+    const role = req.user?.role;
 
-    const result = await orderMedicineService.getAllOrders(userId, role); // updated service method
+    const result = await orderMedicineService.getAllOrders(userId, role);
 
     sendResponse(res, {
       statusCode: StatusCodes.OK,
@@ -111,7 +111,6 @@ const getUserMedicineOrders = catchAsync(
     });
   },
 );
-
 
 // ===========update quantity==========
 const updateOrderQuantity = catchAsync(async (req: Request, res: Response) => {
