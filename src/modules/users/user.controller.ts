@@ -18,23 +18,27 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const getUser = catchAsync(async (req, res) => {
-  const result = await UserService.getUserFromDB(req.user as JwtPayload);
+  const result = await UserService.getUserFromDB(
+    req.user as JwtPayload & { role: string },
+  );
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
-    message: 'Users Getting Successfully',
+    message: 'User retrieved successfully',
     data: result,
   });
 });
 
 const getAllUsers = catchAsync(async (req, res) => {
-  const result = await UserService.getAllUsersFromDb();
+  const result = await UserService.getAllUsersFromDb(
+    req.user as JwtPayload & { role: string },
+  );
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
-    message: 'All users retrieved Successfully',
+    message: 'Users retrieved successfully',
     data: result,
   });
 });
