@@ -82,10 +82,26 @@ const verifyMedicinePayment = catchAsync(async (req, res) => {
   });
 });
 
+// const getUserMedicineOrders = catchAsync(
+//   async (req: Request, res: Response) => {
+//     const userId = req.user?._id;
+//     const result = await orderMedicineService.getAllOrdersByUser(userId);
+
+//     sendResponse(res, {
+//       statusCode: StatusCodes.OK,
+//       success: true,
+//       message: 'Orders retrieved successfully',
+//       data: result,
+//     });
+//   },
+// );
+
 const getUserMedicineOrders = catchAsync(
   async (req: Request, res: Response) => {
     const userId = req.user?._id;
-    const result = await orderMedicineService.getAllOrdersByUser(userId);
+    const role = req.user?.role; // make sure 'role' is added to the user object by your auth middleware
+
+    const result = await orderMedicineService.getAllOrders(userId, role); // updated service method
 
     sendResponse(res, {
       statusCode: StatusCodes.OK,
@@ -95,6 +111,7 @@ const getUserMedicineOrders = catchAsync(
     });
   },
 );
+
 
 // ===========update quantity==========
 const updateOrderQuantity = catchAsync(async (req: Request, res: Response) => {
