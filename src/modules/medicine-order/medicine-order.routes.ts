@@ -43,7 +43,7 @@ OrderMedicineRouter.delete(
 
 OrderMedicineRouter.patch(
   '/update-order',
-  auth(userRole.admin),
+  auth(userRole.admin, userRole.customer),
   orderMedicineController.updateMedicineOrder,
 );
 
