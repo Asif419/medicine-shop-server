@@ -144,15 +144,39 @@ const verifyMedicinePayment = async (order_id: string) => {
   return verifiedPayment;
 };
 
-const getAllOrdersByUser = async (userId: string) => {
-  const userOrders = await OrderMedicine.find({ customer: userId }).populate({
-    path: 'product',
-    select: 'name',
-  });
-  if (!userOrders || userOrders.length === 0) {
-    throw new AppError(StatusCodes.NOT_FOUND, 'No orders found for this user');
+// const getAllOrdersByUser = async (userId: string) => {
+//   const userOrders = await OrderMedicine.find({ customer: userId }).populate({
+//     path: 'product',
+//     select: 'name',
+//   });
+//   if (!userOrders || userOrders.length === 0) {
+//     throw new AppError(StatusCodes.NOT_FOUND, 'No orders found for this user');
+//   }
+//   return userOrders;
+// };
+
+const getAllOrders = async (userId: string, role: 'customer' | 'admin') => {
+  let orders;
+
+  if (role === 'admin') {
+    // Admin gets all orders
+    orders = await OrderMedicine.find().populate({
+      path: 'product',
+      select: 'name',
+    });
+  } else {
+    // Customer gets only their orders
+    orders = await OrderMedicine.find({ customer: userId }).populate({
+      path: 'product',
+      select: 'name',
+    });
   }
-  return userOrders;
+
+  if (!orders || orders.length === 0) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'No orders found');
+  }
+
+  return orders;
 };
 
 // ===============Update quantity
@@ -255,7 +279,7 @@ export const orderMedicineService = {
   getCartItem,
   createMedicineOrderService,
   verifyMedicinePayment,
-  getAllOrdersByUser,
+  getAllOrders,
   updateOrderQuantityService,
   updateMedicineOrderIntoDb,
   deleteOrderFromDB,

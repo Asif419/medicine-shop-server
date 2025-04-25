@@ -54,6 +54,7 @@ declare module "shurjopay" {
   }
 
   export interface PaymentResponse {
+    [x: string]: string;
     checkout_url: string; // URL for payment execution
     amount: number; // Amount to be paid by the customer
     currency: string; // Currency in which the payment will be made

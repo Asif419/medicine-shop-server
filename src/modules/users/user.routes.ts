@@ -13,7 +13,7 @@ router.post(
 
 router.patch(
   '/:id/block',
-  auth('admin'),
+  auth(userRole.admin),
   // validateRequest(UserValidation.updateUserValidationSchema),
   UserControllers.updateUserActiveStatus,
 );

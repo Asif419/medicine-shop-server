@@ -82,10 +82,26 @@ const verifyMedicinePayment = catchAsync(async (req, res) => {
   });
 });
 
+// const getUserMedicineOrders = catchAsync(
+//   async (req: Request, res: Response) => {
+//     const userId = req.user?._id;
+//     const result = await orderMedicineService.getAllOrdersByUser(userId);
+
+//     sendResponse(res, {
+//       statusCode: StatusCodes.OK,
+//       success: true,
+//       message: 'Orders retrieved successfully',
+//       data: result,
+//     });
+//   },
+// );
+
 const getUserMedicineOrders = catchAsync(
   async (req: Request, res: Response) => {
     const userId = req.user?._id;
-    const result = await orderMedicineService.getAllOrdersByUser(userId);
+    const role = req.user?.role;
+
+    const result = await orderMedicineService.getAllOrders(userId, role);
 
     sendResponse(res, {
       statusCode: StatusCodes.OK,
